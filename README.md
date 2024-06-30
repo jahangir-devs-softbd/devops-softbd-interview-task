@@ -53,14 +53,64 @@ further reading
 https://openvpn.net/openvpn-client-for-linux/
 
 
-# Parcona
+# Percona
 
 percona installation guideline
 
 https://medium.com/r/?url=https%3A%2F%2Fdocs.percona.com%2Fpercona-server%2F8.0%2Fquickstart-apt.html%23installation-steps
 
+# Create virtual machine in ubuntu
+
+create virtual machine using **KVM** which is build in tools in ubuntu machine.
+```shell
+sudo apt update
+sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+```
+
+add user so we don't need to use sudo 
+```shell
+sudo adduser $USER libvirt
+sudo adduser $USER libvirt-qemu
+newgrp libvirt
+```
+
+# Virtual host
+
+ubuntu has build in virtualization tools called kvm.
+
+first we need to install depandancy packages
+```shell
+sudo apt update
+sudo apt install -y qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+```
 
 
+then create group and permission for this 
+```shell
+sudo adduser $USER libvirt
+sudo adduser $USER libvirt-qemu
+newgrp libvirt
+```
+
+restart this service
+```shell
+sudo systemctl start libvirtd
+sudo systemctl enable libvirtd
+```
+
+install virt manager for gui
+```shell
+sudo apt install virt-manager
+```
 
 
+download alpine image from linux alpine site `https://www.alpinelinux.org/downloads/`
+
+then run this command to virtualization this linux image
+```shell
+sudo virt-install --name alpinevm --memory 1024 --vcpus 1 --disk size=10 --cdrom /home/jahangir_devs/torrent/alpine-standard-3.20.1-x86_64.iso --os-variant=generic --graphics=none --network bridge=virbr0 --console pty,target_type=serial
+```
+It should ask us user and password it will be `user: root, password: root`
+
+N:B: If command line can't work then open virt-manager then load it from gui `file > create new virtual machine`
 
